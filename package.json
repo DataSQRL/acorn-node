@@ -4,6 +4,7 @@
   "scripts": {
     "test": "jest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "test:ci": "jest --coverage --ci",
     "build": "tsup src/index.ts src/modules/langchain/index.ts src/modules/openai/index.ts src/modules/anthropic/index.ts --format cjs,esm --dts",
     "release": "release-it --'hooks.before:init=\"npm run build && npm run test\"'",
     "prepare": "husky"
@@ -69,5 +70,19 @@
     "ajv": "^8.17.1",
     "graphql": "^16.10.0",
     "uuid": "^11.0.3"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/**/*.d.ts"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
   }
 }
