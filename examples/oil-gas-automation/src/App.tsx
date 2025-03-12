@@ -4,17 +4,13 @@ import {
   createOpenAiToolResults,
   toOpenAiTools
 } from "@datasqrl/acorn-node/openai";
-import { ACTION_TOOL, getPrompt, useConstants } from "./useConstants.ts";
+import { useLogging, useSetup } from "./hooks";
+import { getPrompt } from "./utils.ts";
+import { ACTION_TOOL } from "./constants.ts";
 
 function App() {
-  const {
-    openAI,
-    apiTools,
-    data,
-    log,
-    logEventArrived,
-    logToolCalls
-  } = useConstants();
+  const { openAI, apiTools, data } = useSetup();
+  const { log, logEventArrived, logToolCalls } = useLogging();
 
   // The 'data' object is being changed each time a new
   // subscription payload arrives, triggering this useEffect
@@ -30,7 +26,7 @@ function App() {
       // contains instructions for the OpenAI model
       const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [{
         role: "user",
-        content: getPrompt(data)
+        content: getPrompt(data.LowFlowRate.assetId)
       }];
 
       let toolCalls: OpenAI.Chat.Completions.ChatCompletionMessageToolCall[] = [];
